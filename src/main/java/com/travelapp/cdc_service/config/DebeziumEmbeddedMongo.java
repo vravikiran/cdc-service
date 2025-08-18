@@ -13,7 +13,7 @@ public class DebeziumEmbeddedMongo {
                 Configuration.create()
                         .with("name", "mongodb-connector")
                         .with("connector.class", "io.debezium.connector.mongodb.MongoDbConnector")
-                        .with("mongodb.connection.string", "mongodb+srv://ravikiranvv:walnut16@travelapp-cluster.mcuagnc.mongodb.net/travelapp?retryWrites=true&w=majority\"")
+                        .with("mongodb.connection.string", "mongodb connection string")
                         .with("mongodb.ssl.enabled", "true")
                         .with("snapshot.mode", "initial")
                         .with("database.include.list", "travelapp")
