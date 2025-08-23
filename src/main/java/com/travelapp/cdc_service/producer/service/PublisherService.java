@@ -14,7 +14,6 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Map;
 
 @Service
 public class PublisherService {
@@ -24,14 +23,15 @@ public class PublisherService {
     Logger logger = LoggerFactory.getLogger(PublisherService.class);
 
     public void publishRequestUpdates(StayDetailDto stayDetailDto, String op) {
+        logger.info("Operation information :: {}", op);
         try {
             ProducerRecord<String, String> producerRecord =
                     new ProducerRecord<>(Constants.STAY_DETAIL_TOPIC, null, objectMapper.writeValueAsString(stayDetailDto));
             producerRecord.headers().add(new RecordHeader("op", op.getBytes(StandardCharsets.UTF_8)));
             kafkaTemplate.send(producerRecord);
-            logger.info("successfully published the message in stay detail topic :: {}",stayDetailDto.toString());
+            logger.info("successfully published the message in stay detail topic :: {}", stayDetailDto.toString());
         } catch (JsonProcessingException e) {
-           logger.error("Exception occurred while processing Json message {}",e.getMessage());
+            logger.error("Exception occurred while processing Json message {}", e.getMessage());
         }
     }
 }

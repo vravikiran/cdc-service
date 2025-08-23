@@ -53,6 +53,7 @@ public class StayDetailListener {
 
     private void handleChangeEvent(RecordChangeEvent<SourceRecord> event) {
         SourceRecord sourceRecord = event.record();
+        logger.info("Source Record :: {}", sourceRecord);
         Struct sourceRecordChangeValue = (Struct) sourceRecord.value();
         if(sourceRecordChangeValue != null) {
             String op = sourceRecordChangeValue.getString(Constants.OPERATION);
