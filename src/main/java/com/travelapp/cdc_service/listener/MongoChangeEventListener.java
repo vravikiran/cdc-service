@@ -1,8 +1,6 @@
 package com.travelapp.cdc_service.listener;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.travelapp.cdc_service.dto.StayDetailDto;
 import com.travelapp.cdc_service.producer.service.PublisherService;
 import com.travelapp.cdc_service.util.Constants;
 import io.debezium.config.Configuration;
@@ -28,15 +26,15 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 @Component
-public class StayDetailListener {
+public class MongoChangeEventListener {
 
     private final Executor executor;
     private final DebeziumEngine<RecordChangeEvent<SourceRecord>> debeziumEngine;
     @Autowired
     public PublisherService publisherService;
-    Logger logger = LoggerFactory.getLogger(StayDetailListener.class);
+    Logger logger = LoggerFactory.getLogger(MongoChangeEventListener.class);
 
-    public StayDetailListener(Configuration mongoDBConnector) {
+    public MongoChangeEventListener(Configuration mongoDBConnector) {
         this.executor = Executors.newSingleThreadExecutor();
 
         // Create embedded Debezium engine for MongoDB connector
@@ -55,31 +53,27 @@ public class StayDetailListener {
         SourceRecord sourceRecord = event.record();
         logger.info("Source Record :: {}", sourceRecord);
         Struct sourceRecordChangeValue = (Struct) sourceRecord.value();
-        if(sourceRecordChangeValue != null) {
+        if (sourceRecordChangeValue != null) {
             String op = sourceRecordChangeValue.getString(Constants.OPERATION);
             Struct source = sourceRecordChangeValue.getStruct(Constants.SOURCE);
             String collection = source.getString(Constants.COLLECTION);
             Object afterObj = sourceRecordChangeValue.get(Constants.AFTER);
-            if (afterObj instanceof String outputJson) {
-                publishMessage(collection,op,outputJson);
+            if (afterObj instanceof String data) {
+                publishMessage(collection, op, data);
             }
         }
     }
 
-    private void publishMessage(String collection, String operation, String outputJson) {
+    private void publishMessage(String collection, String operation, String data) {
         ObjectMapper mapper = new ObjectMapper();
-        try {
-            switch (collection.toUpperCase()) {
-                case Constants.STAY_DETAIL: {
-                    StayDetailDto dto = mapper.readValue(outputJson, StayDetailDto.class);
-                    publisherService.publishRequestUpdates(dto, operation);
-                    break;
-                }
-                default:
-                    logger.error("No matching data found");
+        switch (collection.toUpperCase()) {
+            case Constants.STAY_DETAIL: {
+                logger.info("Captured message :: {} ",data);
+                publisherService.publishStayDetailUpdates(data, operation);
+                break;
             }
-        } catch (JsonProcessingException e) {
-            logger.error("Error occurred while processing the message :: {}", e.getMessage());
+            default:
+                logger.error("No matching data found");
         }
     }
 
