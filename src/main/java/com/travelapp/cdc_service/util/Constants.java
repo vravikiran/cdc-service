@@ -10,12 +10,12 @@ public class Constants {
     public static final String READ_OP = "r";
     public static final String MYSQL_OPERATION = "__op";
     public static final String TABLE = "__table";
-    public static final String TRAVEL_AGENT_PROFILE_TOPIC = "ps_.localapp_user_mgmt.travel_agent_profile";
+    public static final String TRAVEL_AGENT_PROFILE_TOPIC = "ps_.travelapp_user_management.travel_agent_profile";
     public static final String TRAVEL_AGENT_PROFILE_TABLE = "travel_agent_profile";
     public static final String USER_MGMT_USER_PROFILE_TABLE = "user_profile";
-    public static final String USER_MGMT_USER_PROFILE_TOPIC = "ps_.localapp_user_mgmt.user_profile";
-    public static final String ROLE_TABLE = "localapp_user_mgmt.role";
-    public static final String ROLE_TOPIC = "ps_.localapp_user_mgmt.role";
+    public static final String USER_MGMT_USER_PROFILE_TOPIC = "ps_.travelapp_user_management.user_profile";
+    public static final String ROLE_TABLE = "role";
+    public static final String ROLE_TOPIC = "ps_.travelapp_user_management.role";
     public static final String MONGODB_CONNECTOR_CLASS = "io.debezium.connector.mongodb.MongoDbConnector";
     public static final String MONGODB_CONNECTOR_NAME = "mongodb-connector";
     public static final String CONNECTOR_NAME_PROP = "name";
@@ -57,4 +57,8 @@ public class Constants {
     public static final String MYSQL_DB_SERVER_ID_PROP = "database.server.id";
     public static final String MYSQL_DB_SERVER_NAME_PROP = "database.server.name";
     public static final String MYSQL_DB_PORT_PROP = "database.port";
+    public static final String UPDATE_OP = "u";
+    public static final String CREATE_OP="c";
+    public static final String STAY_ROOM_PRICE_UPDATES_TOPIC  ="stay_room_price_updates_topic";
+    public static final String STAY_STATUS_UPDATE ="active";
 }

@@ -43,7 +43,6 @@ public class MongoDBDebeziumConfig {
 
     @Bean
     public Configuration mongoDBConnector() {
-
         return
                 Configuration.create()
                         .with(Constants.CONNECTOR_NAME_PROP, Constants.MONGODB_CONNECTOR_NAME)
